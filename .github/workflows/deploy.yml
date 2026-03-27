@@ -22,6 +22,9 @@ jobs:
         working-directory: ./infrastructure
 
     steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+
       - uses: ./.github/actions/setup-env
         with:
           aws-role-arn: ${{ secrets.AWS_ROLE_ARN }}
@@ -45,6 +48,9 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     
     steps:
+      - name: Git clone the repository
+         uses: actions/checkout@v3
+       
       - uses: ./.github/actions/setup-env
         with:
           aws-role-arn: ${{ secrets.AWS_ROLE_ARN }}
