@@ -11,12 +11,12 @@ inputs:
 
 runs:
   using: "composite"   
-    steps:
-      - name: Setup OpenTofu
-        uses: opentofu/setup-opentofu@v1
+  steps:
+    - name: Setup OpenTofu
+      uses: opentofu/setup-opentofu@v1
 
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@main
-        with:
-          role-to-assume:  ${{ inputs.aws-role-arn }} 
-          aws-region: ${{ inputs.aws-region }}
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@main
+      with:
+        role-to-assume:  ${{ inputs.aws-role-arn }} 
+        aws-region: ${{ inputs.aws-region }}
