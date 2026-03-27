@@ -27,7 +27,6 @@ jobs:
 
       - name: Initialize
         run: |
-          cd infrastructure && \
           tofu init \
           -backend-config="bucket=${{ secrets.STATE_BUCKET_NAME }}" \
           -backend-config="region=${{ secrets.AWS_REGION }}" \
