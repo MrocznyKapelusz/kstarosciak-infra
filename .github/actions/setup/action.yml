@@ -10,10 +10,7 @@ inputs:
     required: true
 
 runs:
-  using: "composite"   steps:
-    defaults:
-      run:
-        working-directory: ./infrastructure
+  using: "composite"   
     steps:
       - name: Setup OpenTofu
         uses: opentofu/setup-opentofu@v1
