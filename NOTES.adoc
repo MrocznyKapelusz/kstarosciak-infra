@@ -5,6 +5,9 @@ TODO: can these notes be transformed into ADRs?
 I have added a basic OpenTofu workflow to this repo. The plan job runs on PRs, while the apply job runs only on main.
 I still need to add a linter and static code analysis to run on both master and feature branches on each push.
 
+=== DNS
+I have decided to not use HCloud for DNS, rather add the CloudFLare provider to my Tofu config and just add a record there.
+
 == 24.03.2026
 I explored options for where the Terraform state file can be kept for this project.
 Hetzner has Object Storage, but it is quite expensive - minimum price will be 5 euro per month if I just leave it enabled.
