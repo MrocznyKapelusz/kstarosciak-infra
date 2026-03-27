@@ -7,7 +7,7 @@ permissions:
       contents: read   
 
 jobs:    
-  AssumeRole:
+  DeployInfra:
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
@@ -24,6 +24,7 @@ jobs:
 
       - name: Initialize
         run: |
+          cd infrastructure && \
           tofu init \
           -backend-config="bucket=${{ secrets.STATE_BUCKET_NAME }}" \
           -backend-config="region=${{ secrets.AWS_REGION }}" \
