@@ -1,2 +1,0 @@
-# Run tf fmt -check and tf validate on infra.
-# Run linter/static analysis on Ansible and TF code
