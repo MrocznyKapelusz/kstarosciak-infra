@@ -1,5 +1,5 @@
 resource "hcloud_server" "this" {
-  name        = "cloud-resume-challenge"
+  name        = var.cloudflare_zone_name
   image       = "rocky-10"
   server_type = "cx23"
   ssh_keys = [data.hcloud_ssh_key.this.id] 
@@ -9,5 +9,5 @@ resource "hcloud_server" "this" {
 }
 
 data "hcloud_ssh_key" "this" {
-  name = "cloud-resume-challenge"
+  name = var.hcloud_ssh_key_name
 }
