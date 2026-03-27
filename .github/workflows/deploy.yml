@@ -49,7 +49,7 @@ jobs:
     
     steps:
       - name: Git clone the repository
-         uses: actions/checkout@v3
+        uses: actions/checkout@v3
        
       - uses: ./.github/actions/setup-env
         with:
