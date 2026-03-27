@@ -55,5 +55,13 @@ jobs:
         with:
           aws-role-arn: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
-           
-      - run: tofu apply -auto-approve -var="hcloud_token=${{ secrets.HETZNER_API_KEY }}"
+
+      - name: Initialize
+        run: |
+          tofu init \
+          -backend-config="bucket=${{ secrets.STATE_BUCKET_NAME }}" \
+          -backend-config="region=${{ secrets.AWS_REGION }}" \
+          -backend-config="key=${{ secrets.STATE_FILE_KEY }}"    
+
+      - name: Apply
+        run: tofu apply -auto-approve -var="hcloud_token=${{ secrets.HETZNER_API_KEY }}"
