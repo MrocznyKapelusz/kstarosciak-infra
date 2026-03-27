@@ -1,0 +1,22 @@
+name: 'Setup Environment'
+description: 'Checks out code, configures AWS, and installs OpenTofu'
+
+inputs:
+  aws-role-arn:
+    description: 'The AWS Role ARN to assume'
+    required: true
+  aws-region:
+    description: 'The AWS Region'
+    required: true
+
+runs:
+  using: "composite"   
+  steps:
+    - name: Setup OpenTofu
+      uses: opentofu/setup-opentofu@v1
+
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@main
+      with:
+        role-to-assume:  ${{ inputs.aws-role-arn }} 
+        aws-region: ${{ inputs.aws-region }}
