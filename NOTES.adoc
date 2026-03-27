@@ -1,0 +1,40 @@
+= Notes
+TODO: can these notes be transformed into ADRs?
+== 24.03.2026
+I explored options for where the Terraform state file can be kept for this project.
+Hetzner has Object Storage, but it is quite expensive - minimum price will be 5 euro per month if I just leave it enabled.
+This leads me to think that maybe using S3 will be the better option for my state file. Especially since object locking is now available and no DynamoDB table will be needed to handle state locks.
+
+In addition to that, I learned that GitHub has a managed Secrets and Variables option, where I can safely store my Hetzner API key and AWS credentials. I will check if OIDC can be used for the state file auth in my pipelines, but I suspect it can.
+
+I also explored which Linux distros are available by default in Hetzner. I think it will be good for me to choose one which I am NOT comfortable with (yet) - this will ensure I maximise my learning opportunity. I think I will go for Alma Linux or Rocky Linux.
+
+It also seems like I will need to write some Ansible playbooks. One of those will be for provisioning the prerequisites for my site running, another will be the updates I want to push to the website, like maybe blog posts or just updates to my resume.
+
+=== CI/CD
+It looks like GitHub offers *free* workflows when your repository is public (which this is). This means I do not need to provision my own runner.
+
+My goals for CICD: 
+* run code checks on Terraform and Ansible code on each commit.
+* deploy only when merging to master. Deploy only changes - i.e. check if infra changed or the source code changed.
+
+=== OIDC
+I have successfully configured OIDC to connect this GitHub repo with my personal AWS account. This means I can now use S3 to store my state file.
+
+=== Terraform/OpenToFu
+I will use 'partial configuration' of my backend in code and pass backend config parameters during runtime. I will store those as GitHub variables or secrets.
+
+```
+terraform init \
+  -backend-config="bucket=$STATE_BUCKET_NAME" \
+  -backend-config="key=$STATE_FILE_PATH" \
+  -backend-config="region=$AWS_REGION"
+```
+Then in plan & apply use -var for hetzner api key and cloudflare api key. 
+
+TODO: check if there are actions for OpenToFu deployments.
+
+=== DNS
+Check how DNS works on Hetzner and if it would make sense to not use CloudFlare's DNS - maybe I can keep the project simpler and not have 2 providers, just one (Hetzner) - as it seems like the DNS feature was not something they bill for.
+
+Also check how to use CloudFlare as CDN and if I can e.g. only whitelist CloudFlare IPs in my Hetzner firewall.

@@ -1,0 +1,7 @@
+= TODO list for this project
+
+* [ ] Check GH Actions for OpenTofu deployments. Consider writing the job myself to learn more about OpenTofu.
+* [ ] Check how a DNS zone can be transferred from CloudFlare to Hetzner. This could enable me to manage DNS records within Hetzner and not have to use 2 providers in my infra stack. Maybe this can be done for just a subdomain like resume.kstarosciak.com?
+* [ ] Add my public-facing email address to the resume. Update my resume 'abstract'
+* [ ] Figure out how to get the resume onto the VPS :D - Ansible?
+* [ ] Check how to host the hugo site on a _prod-like_ environment - i.e. nginx?
