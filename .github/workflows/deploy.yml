@@ -1,30 +1,32 @@
 name: Connect to an AWS role from a GitHub repository
 
-on: push
+on: 
+  push:
+    branches: 
+    - master
+  pull-request:
+    types:
+      - opened
+    branches:
+      - master
 
 permissions:
       id-token: write   
       contents: read   
 
 jobs:    
-  DeployInfra:
+  TofuPlan:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./infrastructure
+
     steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v3
-
-      - name: Setup OpenTofu
-        uses: opentofu/setup-opentofu@v1
-
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@main
+      - uses: ./.github/actions/setup-env
         with:
-          role-to-assume:  ${{ secrets.AWS_ROLE_ARN }} 
+          aws-role-arn: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
-
+     
       - name: Initialize
         run: |
           tofu init \
@@ -33,4 +35,19 @@ jobs:
           -backend-config="key=${{ secrets.STATE_FILE_KEY }}"
 
       - name: Plan
-        run: tofu plan -var="hcloud_token=${{ secrets.HETZNER_API_KEY }}" -out=plan.tfplan 
+        run: tofu plan -var="hcloud_token=${{ secrets.HETZNER_API_KEY }}"  
+
+    TofuApply:
+      needs: TofuPlan
+      runs-on: ubuntu-latest
+      environment: prod
+    
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    
+      steps:
+        - uses: ./.github/actions/setup-env
+          with:
+            aws-role-arn: ${{ secrets.AWS_ROLE_ARN }}
+            aws-region: ${{ secrets.AWS_REGION }}
+           
+        - run: tofu apply -auto-approve -var="hcloud_token=${{ secrets.HETZNER_API_KEY }}"
