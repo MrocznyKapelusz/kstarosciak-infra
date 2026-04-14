@@ -8,6 +8,7 @@ resource "hcloud_server" "this" {
   }
   user_data = templatefile("./scripts/cloud-init.yaml", {
     ssh_key         = data.hcloud_ssh_key.this.public_key,
+    ssh_key_hugo         = data.hcloud_ssh_key.this.public_key,
     domain_name     = var.cloudflare_zone_name,
     github_token    = var.github_pat_token,
     github_username = var.github_username,
@@ -15,6 +16,10 @@ resource "hcloud_server" "this" {
   })
 }
 
-data "hcloud_ssh_key" "this" {
-  name = var.hcloud_ssh_key_name
+data "hcloud_ssh_key" "default" {
+  name = var.hcloud_default_ssh_key_name
+}
+
+data "hcloud_ssh_key" "hugo" {
+  name = var.hcloud_hugo_ssh_key_name
 }
