@@ -36,7 +36,7 @@ jobs:
           -backend-config="key=${{ secrets.STATE_FILE_KEY }}"
 
       - name: Plan
-        run: tofu plan -var="hcloud_token=${{ secrets.HETZNER_API_KEY }}"  -var="hcloud_ssh_key_name=${{ secrets.HCLOUD_SSH_KEY_NAME }}" -var="cloudflare_token=${{ secrets.CLOUDFLARE_API_TOKEN }}" -var="cloudflare_zone_name=${{ secrets.CLOUDFLARE_ZONE_NAME }}"
+        run: tofu plan -var="hcloud_token=${{ secrets.HETZNER_API_KEY }}"  -var="hcloud_hugo_ssh_key_name=${{ secrets.HCLOUD_HUGO_SSH_KEY_NAME }}" -var="hcloud_default_ssh_key_name=${{ secrets.HCLOUD_SSH_KEY_NAME }}" -var="cloudflare_token=${{ secrets.CLOUDFLARE_API_TOKEN }}" -var="cloudflare_zone_name=${{ secrets.CLOUDFLARE_ZONE_NAME }}" -var="github_pat_token=${{ secrets.HUGO_REPO_PAT_TOKEN }}" -var="github_username=$GITHUB_REPOSITORY_OWNER" -var="hugo_repo_name=${{ secrets.HUGO_REPO_NAME }}" 
 
   TofuApply:
     needs: TofuPlan
