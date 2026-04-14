@@ -1,7 +1,7 @@
 #cloud-config
 users:
   - name: admin
-    groups: users, admin
+    groups: [users, sudo]
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
     ssh_authorized_keys:
@@ -19,7 +19,7 @@ write_files:
       Port 2222
       KbdInteractiveAuthentication no
       ChallengeResponseAuthentication no
-      MaxAuthTries 2
+      MaxAuthTries 4
       AllowTcpForwarding no
       X11Forwarding no
       AllowAgentForwarding no
@@ -30,5 +30,6 @@ runcmd:
   - systemctl enable fail2ban
   - ufw allow 2222
   - ufw allow 443
-  - ufw enable
-  - reboot
+  - ufw --force enable
+power_state:
+  mode: reboot
