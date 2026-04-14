@@ -42,7 +42,7 @@ write_files:
   # 1. Provision the Caddyfile
   - path: /etc/caddy/Caddyfile
     content: |
-      ${domain_name} {
+      https://${domain_name} {
           root * /var/www/hugo-site
           file_server
           encode gzip zstd
