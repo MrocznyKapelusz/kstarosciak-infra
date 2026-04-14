@@ -42,7 +42,7 @@ write_files:
   # 1. Provision the Caddyfile
   - path: /etc/caddy/Caddyfile
     content: |
-      ${domain_name} {
+      https://${domain_name} {
           root * /var/www/hugo-site
           file_server
           encode gzip zstd
@@ -68,6 +68,9 @@ runcmd:
   - ufw allow 443/tcp
   - ufw --force enable
 
+  # Fixes to make Caddy work
+  - mkdir -p /var/lib/caddy
+  - chown -R caddy:caddy /var/lib/caddy
   - systemctl daemon-reload
 
   # 2. Install Caddy via official repository
